@@ -1,72 +1,107 @@
 const data = {
-  1: {
-    word: 'slim',
-    meaning: '苗條的',
-    pos: 'adj.',
-    sentence: 'She has a slim figure and looks great in that dress.',
-    translation: '她身材苗條，穿那件洋裝很好看。'
+  chubby: {
+    word: "chubby",
+    meaning: "胖嘟嘟的",
+    pos: "adj.",
+    sentence: "The baby is so chubby and adorable!",
+    translation: "這寶寶胖嘟嘟的，好可愛！"
   },
-  2: {
-    word: 'plump',
-    meaning: '豐滿的',
-    pos: 'adj.',
-    sentence: 'The baby had plump cheeks that everyone loved to pinch.',
-    translation: '那嬰兒有人人都愛捏的豐滿雙頰。'
+  overweight: {
+    word: "overweight",
+    meaning: "過重的",
+    pos: "adj.",
+    sentence: "He used to be overweight, but now he goes to the gym regularly.",
+    translation: "他以前體重過重，但現在會定期去健身房了。"
   },
-  3: {
-    word: 'fit',
-    meaning: '健美的',
-    pos: 'adj.',
-    sentence: 'He goes to the gym every day to stay fit.',
-    translation: '他每天去健身房保持身材。'
+  flabby: {
+    word: "flabby",
+    meaning: "鬆弛的",
+    pos: "adj.",
+    sentence: "I need to exercise more—my arms are getting flabby.",
+    translation: "我得多運動了——我的手臂開始鬆垮垮的。"
   },
-  4: {
-    word: 'chubby',
-    meaning: '圓胖的',
-    pos: 'adj.',
-    sentence: 'My cat is a bit chubby but very cute.',
-    translation: '我的貓有點圓胖，但非常可愛。'
+  plump: {
+    word: "plump",
+    meaning: "豐滿的",
+    pos: "adj.",
+    sentence: "She’s a bit plump, but she carries it well.",
+    translation: "她有點豐滿，但非常得體。"
   },
-  5: {
-    word: 'skinny',
-    meaning: '瘦骨如柴的',
-    pos: 'adj.',
-    sentence: 'He was so skinny that his jeans kept falling down.',
-    translation: '他瘦得褲子都掉下來了。'
+  "big-boned": {
+    word: "big-boned",
+    meaning: "骨架大的",
+    pos: "adj.",
+    sentence: "I’m not fat, I’m just big-boned!",
+    translation: "我不是胖，我只是骨架大！"
   },
-  6: {
-    word: 'muscular',
-    meaning: '肌肉發達的',
-    pos: 'adj.',
-    sentence: 'The actor trained for months to get that muscular look.',
-    translation: '那位演員訓練了好幾個月才練出那副肌肉。'
+  slim: {
+    word: "slim",
+    meaning: "苗條的",
+    pos: "adj.",
+    sentence: "She looked stunning in that slim black dress.",
+    translation: "她穿那件修身黑洋裝美極了。"
   },
-  7: {
-    word: 'fat',
-    meaning: '胖的',
-    pos: 'adj.',
-    sentence: 'He used to be quite fat but lost weight recently.',
-    translation: '他以前很胖，但最近瘦下來了。'
+  lean: {
+    word: "lean",
+    meaning: "精瘦的",
+    pos: "adj.",
+    sentence: "He has a lean, athletic build.",
+    translation: "他身材精瘦、運動型。"
   },
-  8: {
-    word: 'lean',
-    meaning: '精瘦的',
-    pos: 'adj.',
-    sentence: 'He had a lean body from years of running marathons.',
-    translation: '他因多年跑馬拉松而擁有精瘦的身體。'
+  petite: {
+    word: "petite",
+    meaning: "嬌小的",
+    pos: "adj.",
+    sentence: "She’s petite but surprisingly strong.",
+    translation: "她嬌小但意外地有力氣。"
   },
-  9: {
-    word: 'stocky',
-    meaning: '矮壯的',
-    pos: 'adj.',
-    sentence: 'The wrestler had a stocky build and a fierce look.',
-    translation: '那位摔角選手身材矮壯，神情兇狠。'
+  skinny: {
+    word: "skinny",
+    meaning: "瘦巴巴的",
+    pos: "adj.",
+    sentence: "He was so skinny in high school!",
+    translation: "他高中時超瘦的！"
   },
-  10: {
-    word: 'curvy',
-    meaning: '曲線優美的',
-    pos: 'adj.',
-    sentence: 'The model was known for her curvy figure.',
-    translation: '那名模特兒以曲線優美的身材聞名。'
+  slender: {
+    word: "slender",
+    meaning: "修長的",
+    pos: "adj.",
+    sentence: "The dancer had a graceful, slender figure.",
+    translation: "那位舞者身材修長又優雅。"
+  },
+  fit: {
+    word: "fit",
+    meaning: "健康結實的",
+    pos: "adj.",
+    sentence: "You’ve been working out—you look really fit!",
+    translation: "你最近有在健身吧？看起來好結實！"
+  },
+  toned: {
+    word: "toned",
+    meaning: "結實的",
+    pos: "adj.",
+    sentence: "Her arms are so toned from yoga.",
+    translation: "她的手臂因為做瑜伽變得很結實。"
+  },
+  hourglass: {
+    word: "hourglass",
+    meaning: "沙漏型身材",
+    pos: "adj. / n.（在形容身形時多用作名詞：an hourglass figure）",
+    sentence: "She has an hourglass figure that turns heads.",
+    translation: "她的沙漏型身材總是吸引目光。"
+  },
+  "well-proportioned": {
+    word: "well-proportioned",
+    meaning: "勻稱的",
+    pos: "adj.",
+    sentence: "His body is well-proportioned and balanced.",
+    translation: "他的身材比例勻稱又協調。"
+  },
+  "in shape": {
+    word: "in shape",
+    meaning: "身材良好",
+    pos: "phr.（片語，常與 be / get 搭配使用）",
+    sentence: "I’ve been jogging to get back in shape.",
+    translation: "我最近開始慢跑，想讓自己恢復好身材。"
   }
 };
