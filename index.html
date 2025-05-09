@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>單字配對遊戲首頁</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', sans-serif;
+      background: #f9f3ef;
+      margin: 0;
+      padding: 2em;
+      color: #4a2f1b;
+    }
+    h1 {
+      text-align: center;
+      color: #a05735;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5em;
+      max-width: 800px;
+      margin: 2em auto;
+    }
+    .card {
+      background: #f7b267;
+      border-radius: 16px;
+      padding: 1.2em;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      background-color: #fdd692;
+    }
+    .card:active {
+      background-color: #f4a742;
+      transform: scale(0.98);
+    }
+    .card a {
+      text-decoration: none;
+      color: #4a2f1b;
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+  </style>
+</head>
+<body>
+  <h1>單字配對遊戲選單</h1>
+  <div class="container">
+    <div class="card">
+      <a href="Body Shapes.html">身材形容詞配對</a>
+    </div>
+    <!-- 以後可以繼續新增單元 -->
+    <!-- <div class="card"><a href="land42.html">地塊42</a></div> -->
+  </div>
+</body>
+</html>
