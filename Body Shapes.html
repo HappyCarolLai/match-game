@@ -174,6 +174,9 @@ shuffledIds.forEach(id => {
   wordDiv.className = 'word';
   wordDiv.dataset.id = id;
   wordDiv.innerText = entry.word;
+  wordDiv.addEventListener('click', () => {
+    speakText(entry.word, 'en-US');
+  });
   englishCol.appendChild(wordDiv);
 });
 
@@ -186,6 +189,9 @@ shuffledMeanings.forEach(id => {
   meaningDiv.className = 'meaning';
   meaningDiv.dataset.id = id;
   meaningDiv.innerText = entry.meaning;
+  meaningDiv.addEventListener('click', () => {
+    speakText(entry.meaning, 'zh-TW');
+  });
   chineseCol.appendChild(meaningDiv);
 });
 
@@ -234,6 +240,12 @@ shuffledMeanings.forEach(id => {
 
   function playAudio() {
     speechSynthesis.speak(window.currentUtterance);
+  }
+
+  function speakText(text, lang = 'en-US') {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = lang;
+    speechSynthesis.speak(utterance);
   }
 
   function checkAllMatched() {
