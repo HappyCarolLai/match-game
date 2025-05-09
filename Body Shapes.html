@@ -147,21 +147,22 @@
 
 <!-- 再執行主程式 -->
 <script>
-  const englishCol = document.getElementById('englishColumn');
-  const chineseCol = document.getElementById('chineseColumn');
+const englishCol = document.getElementById('englishColumn');
+const chineseCol = document.getElementById('chineseColumn');
 
-  let selectedWord = null;
+let selectedWord = null;
+let voices = [];
+let voicesReady = false;
 
-  englishCol.addEventListener('click', (e) => {
-    if (e.target.classList.contains('word') && !e.target.classList.contains('matched')) {
-      // 移除其他已選項目的 selected 狀態
-      document.querySelectorAll('.word.selected').forEach(el => el.classList.remove('selected'));
-
-      // 加上目前點擊的按鈕的 selected 狀態
-      e.target.classList.add('selected');
-      selectedWord = e.target;
+function loadVoices() {
+  voices = speechSynthesis.getVoices();
+  if (voices.length !== 0) {
+    voicesReady = true;
+  } else {
+    setTimeout(loadVoices, 100);
   }
-});
+}
+loadVoices();
 
 // 亂序英文和中文，並將它們分開處理
 const shuffledIds = Object.keys(data).sort(() => Math.random() - 0.5);
@@ -195,66 +196,92 @@ shuffledMeanings.forEach(id => {
   chineseCol.appendChild(meaningDiv);
 });
 
+englishCol.addEventListener('click', (e) => {
+  if (e.target.classList.contains('word') && !e.target.classList.contains('matched')) {
+    document.querySelectorAll('.word.selected').forEach(el => el.classList.remove('selected'));
+    e.target.classList.add('selected');
+    selectedWord = e.target;
+  }
+});
 
-  const words = document.querySelectorAll('.word');
-  const meanings = document.querySelectorAll('.meaning');
+const words = document.querySelectorAll('.word');
+const meanings = document.querySelectorAll('.meaning');
 
-  meanings.forEach(meaning => {
-    meaning.addEventListener('click', () => {
-      if (selectedWord) {
-        if (selectedWord.dataset.id === meaning.dataset.id) {
-          selectedWord.classList.add('matched');
-          meaning.classList.add('matched');
-          showPopup(meaning.dataset.id);
-          checkAllMatched();
-        } else {
-          // ❗ 錯誤時加上閃爍效果
-          selectedWord.classList.add('flash');
-          meaning.classList.add('flash');
-          setTimeout(() => {
-            selectedWord.classList.remove('flash');
-            meaning.classList.remove('flash');
-          }, 500);
-        }
-        selectedWord.classList.remove('selected');
-        selectedWord = null;
+meanings.forEach(meaning => {
+  meaning.addEventListener('click', () => {
+    if (selectedWord) {
+      if (selectedWord.dataset.id === meaning.dataset.id) {
+        selectedWord.classList.add('matched');
+        meaning.classList.add('matched');
+        showPopup(meaning.dataset.id);
+        checkAllMatched();
+      } else {
+        selectedWord.classList.add('flash');
+        meaning.classList.add('flash');
+        setTimeout(() => {
+          selectedWord.classList.remove('flash');
+          meaning.classList.remove('flash');
+        }, 500);
       }
-    });
-  });
-
-  function showPopup(id) {
-    const entry = data[id];
-    document.getElementById('word').innerText = entry.word;
-    document.getElementById('pos').innerText = entry.pos;
-    document.getElementById('sentence').innerText = entry.sentence;
-    document.getElementById('translation').innerText = entry.translation;
-    document.getElementById('popup').style.display = 'block';
-
-    window.currentUtterance = new SpeechSynthesisUtterance(entry.sentence);
-    currentUtterance.lang = 'en-US';
-  }
-
-  function closePopup() {
-    document.getElementById('popup').style.display = 'none';
-  }
-
-  function playAudio() {
-    speechSynthesis.speak(window.currentUtterance);
-  }
-
-  function speakText(text, lang = 'en-US') {
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = lang;
-    speechSynthesis.speak(utterance);
-  }
-
-  function checkAllMatched() {
-    const allMatched = document.querySelectorAll('.word.matched').length === Object.keys(data).length;
-    if (allMatched) {
-      document.body.style.backgroundColor = '#ddd'; // 或其他灰色
+      selectedWord.classList.remove('selected');
+      selectedWord = null;
     }
+  });
+});
+
+function showPopup(id) {
+  const entry = data[id];
+  document.getElementById('word').innerText = entry.word;
+  document.getElementById('pos').innerText = entry.pos;
+  document.getElementById('sentence').innerText = entry.sentence;
+  document.getElementById('translation').innerText = entry.translation;
+  document.getElementById('popup').style.display = 'block';
+
+  window.currentUtterance = new SpeechSynthesisUtterance(entry.sentence);
+  window.currentUtterance.lang = 'en-US';
+
+  if (voicesReady) {
+    const voice = voices.find(v => v.name.includes("Samantha"));
+    if (voice) window.currentUtterance.voice = voice;
+  }
 }
 
+function closePopup() {
+  document.getElementById('popup').style.display = 'none';
+}
+
+function playAudio() {
+  if (window.currentUtterance) {
+    speechSynthesis.speak(window.currentUtterance);
+  }
+}
+
+function speakText(text, lang = 'en-US') {
+  if (!voicesReady) {
+    setTimeout(() => speakText(text, lang), 100);
+    return;
+  }
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = lang;
+
+  if (lang === 'en-US') {
+    const voice = voices.find(v => v.name.includes("Samantha"));
+    if (voice) utterance.voice = voice;
+  } else if (lang === 'zh-TW') {
+    const voice = voices.find(v => v.name.includes("Mei-Jia"));
+    if (voice) utterance.voice = voice;
+  }
+
+  speechSynthesis.speak(utterance);
+}
+
+function checkAllMatched() {
+  const allMatched = document.querySelectorAll('.word.matched').length === Object.keys(data).length;
+  if (allMatched) {
+    document.body.style.backgroundColor = '#ddd';
+  }
+}
 </script>
 
 </body>
