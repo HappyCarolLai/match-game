@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>身材形容詞</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff8e1;
+      margin: 0;
+      padding: 20px;
+      color: #fff;
+    }
+    h2 {
+      text-align: center;
+      color: #d35400;
+      margin-bottom: 30px;
+    }
+    .selected {
+      background-color: #ffeaa7 !important;
+      border: 2px solid #fdcb6e;
+    }
+    .columns {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+    .column {
+      width: 45%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .word, .meaning {
+      height: 30px; /* 統一高度為 30px */
+      line-height: 30px;
+      padding: 0 15px;
+      border: 2px solid #ffcc80;
+      border-radius: 12px;
+      background-color: #f6b93b;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.2s;
+    }
+    .word:hover, .meaning:hover {
+      background-color: #e67e22;
+      transform: scale(1.03);
+    }
+    .matched {
+      background-color: #ffd54f !important;
+      pointer-events: none;
+      color: #4e342e;
+      font-weight: bold;
+    }
+
+    /* 錯誤閃爍提示動畫 */
+    .flash {
+      animation: flash-bg 1s;
+    }
+
+    @keyframes flash-bg {
+      0%, 100% { background-color: #f6b93b; }
+      25%, 75% { background-color: #f44336; }
+      50% { background-color: #f6b93b; }
+    }
+
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fffefc;
+      padding: 20px;
+      border: 2px solid #e67e22;
+      border-radius: 10px;
+      width: 90vw;
+      max-width: 400px;
+      min-width: 260px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 999;
+      color: #333;
+      font-size: 1.2rem;
+    }
+    .popup h2 {
+      margin-top: 0;
+      color: #d35400;
+      font-size: 2rem;
+      text-align: left;
+    }
+    .example {
+      margin-top: 15px;
+      padding-top: 10px;
+      border-top: 1px solid #ddd;
+      font-size: 1.2rem;
+    }
+    .close-btn {
+      float: right;
+      font-size: 22px;
+      cursor: pointer;
+      color: #888;
+    }
+    .popup button {
+      margin-top: 12px;
+      font-size: 15px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      background-color: #ff9800;
+      color: white;
+      border: none;
+    }
+    .popup button:hover {
+      background-color: #f57c00;
+    }
+  </style>
+</head>
+<body>
+
+<h2>💡 身材形容詞</h2>
+
+<div class="columns">
+  <div class="column" id="englishColumn"></div>
+  <div class="column" id="chineseColumn"></div>
+</div>
+
+<!-- 彈出詞性 + 例句視窗 -->
+<div class="popup" id="popup">
+  <span class="close-btn" onclick="closePopup()">×</span>
+  <h2><span id="word"></span></h2>
+  <p><span id="pos"></span></p>
+  <div class="example">
+    <p><strong>英文：</strong><br><span id="sentence"></span>
+    <button onclick="playAudio()">🔊</button></p>
+    <p><strong>中文：</strong><br><span id="translation"></span></p>
+  </div>
+</div>
+
+<!-- 先引入單元資料 -->
+<script src="bodyshapes.js"></script>
+
+<!-- 再執行主程式 -->
+<script>
+  const englishCol = document.getElementById('englishColumn');
+  const chineseCol = document.getElementById('chineseColumn');
+
+  let selectedWord = null;
+
+  englishCol.addEventListener('click', (e) => {
+    if (e.target.classList.contains('word') && !e.target.classList.contains('matched')) {
+      // 移除其他已選項目的 selected 狀態
+      document.querySelectorAll('.word.selected').forEach(el => el.classList.remove('selected'));
+
+      // 加上目前點擊的按鈕的 selected 狀態
+      e.target.classList.add('selected');
+      selectedWord = e.target;
+  }
+});
+
+// 亂序英文和中文，並將它們分開處理
+const shuffledIds = Object.keys(data).sort(() => Math.random() - 0.5);
+
+// 英文單字區
+shuffledIds.forEach(id => {
+  const entry = data[id];
+
+  const wordDiv = document.createElement('div');
+  wordDiv.className = 'word';
+  wordDiv.dataset.id = id;
+  wordDiv.innerText = entry.word;
+  englishCol.appendChild(wordDiv);
+});
+
+// 中文意思區，單獨亂序
+const shuffledMeanings = shuffledIds.sort(() => Math.random() - 0.5);
+shuffledMeanings.forEach(id => {
+  const entry = data[id];
+
+  const meaningDiv = document.createElement('div');
+  meaningDiv.className = 'meaning';
+  meaningDiv.dataset.id = id;
+  meaningDiv.innerText = entry.meaning;
+  chineseCol.appendChild(meaningDiv);
+});
+
+
+  const words = document.querySelectorAll('.word');
+  const meanings = document.querySelectorAll('.meaning');
+
+  meanings.forEach(meaning => {
+    meaning.addEventListener('click', () => {
+      if (selectedWord) {
+        if (selectedWord.dataset.id === meaning.dataset.id) {
+          selectedWord.classList.add('matched');
+          meaning.classList.add('matched');
+          showPopup(meaning.dataset.id);
+          checkAllMatched();
+        } else {
+          // ❗ 錯誤時加上閃爍效果
+          selectedWord.classList.add('flash');
+          meaning.classList.add('flash');
+          setTimeout(() => {
+            selectedWord.classList.remove('flash');
+            meaning.classList.remove('flash');
+          }, 500);
+        }
+        selectedWord.classList.remove('selected');
+        selectedWord = null;
+      }
+    });
+  });
+
+  function showPopup(id) {
+    const entry = data[id];
+    document.getElementById('word').innerText = entry.word;
+    document.getElementById('pos').innerText = entry.pos;
+    document.getElementById('sentence').innerText = entry.sentence;
+    document.getElementById('translation').innerText = entry.translation;
+    document.getElementById('popup').style.display = 'block';
+
+    window.currentUtterance = new SpeechSynthesisUtterance(entry.sentence);
+    currentUtterance.lang = 'en-US';
+  }
+
+  function closePopup() {
+    document.getElementById('popup').style.display = 'none';
+  }
+
+  function playAudio() {
+    speechSynthesis.speak(window.currentUtterance);
+  }
+
+  function checkAllMatched() {
+    const allMatched = document.querySelectorAll('.word.matched').length === Object.keys(data).length;
+    if (allMatched) {
+      document.body.style.backgroundColor = '#ddd'; // 或其他灰色
+    }
+}
+
+</script>
+
+</body>
+</html>
